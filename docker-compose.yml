@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  nginx:
+    build: ./nginx/build
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+
+  redmine:
+    image: redmine:latest
+    restart: always
+    volumes:
+      - ./volumes/redmine/files:/usr/src/redmine/files
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: ENTER_DB_STRONG_PASSWORD_HERE_0000
+      REDMINE_SECRET_KEY_BASE: ENTER_REDMINE_SECRET_KEY_HERE_000
+
+  db:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ENTER_DB_STRONG_PASSWORD_HERE_0000
+      MYSQL_DATABASE: redmine
